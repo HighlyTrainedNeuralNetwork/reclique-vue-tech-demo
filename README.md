@@ -1,5 +1,10 @@
 # reclique-vue-tech-demo
 
+## Netlify hosted link
+```
+reclique-tech-demo.netlify.app
+```
+
 ## Project setup
 ```
 npm install
