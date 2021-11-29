@@ -2,7 +2,7 @@
   <div class="generalContainer">
     <div class="displayContainer">
       <div id="questionText" v-if="questionLoc < questions.length">{{questions[questionLoc]["description"]}}?</div>
-      <div id="questionPosition">Current Question: {{questionLoc + 1 }} / {{this.questions.length}}</div>
+      <div id="questionPosition">Current Question: {{questionLoc + 1}} / {{this.questions.length}}</div>
       <table class="inputTable">
       <tr>
         <th></th>
@@ -16,7 +16,7 @@
         <td><input type="text" v-model="row.date"/></td>
         <td>
           <select name="transaction type" v-model="row.type">
-            <option value="" disabled>Select transaction type</option>
+            <option value="" disabled hidden>Select transaction type</option>
             <option value="revenue">revenue</option>
             <option value="deferred">deferred</option>
             <option value="cash">cash</option>
@@ -51,97 +51,10 @@ export default {
     initialState: function() {
       this.rows = [{date: "", type: "", debit: "", credit: ""}, {date: "", type: "", debit: "", credit: ""}]
     },
-    getQuestions2: async function() {
+    getQuestions: async function() {
       let query = "https://reclique.github.io/web-dev-testing/1_accounting_game/questions.json"
       const response = await fetch(query)
       this.questions = await response.json()
-    },
-    getQuestions: function() {
-      this.questions = [
-    {
-        "title": "Question #1",
-        "description": "What are the entries for ringing up a $100 fee on 6/10 and paying for it on the same day",
-        "correct_answers": [
-            {
-                "type": "cash",
-                "entries": [
-                    {
-                        "when": "6/10",
-                        "type": "cash",
-                        "Dr": 100
-                    },
-                    {
-                        "when": "6/10",
-                        "type": "revenue",
-                        "Cr": 100
-                    }
-                ]
-            },
-            {
-                "type": "accrual",
-                "entries": [
-                    {
-                        "when": "6/10",
-                        "type": "cash",
-                        "Dr": 100
-                    },
-                    {
-                        "when": "6/10",
-                        "type": "revenue",
-                        "Cr": 100
-                    }
-                ]
-            }
-        ]
-    },
-{
-        "title": "Question #2",
-        "description": "What are the entries for ringing up a $100 fee on 6/10 and paying for it later 7/15",
-        "correct_answers": [
-            {
-                "type": "cash",
-                "entries": [
-                    {
-                        "when": "7/15",
-                        "type": "cash",
-                        "Dr": 100
-                    },
-                    {
-                        "when": "7/15",
-                        "type": "revenue",
-                        "Cr": 100
-                    }
-                ]
-            },
-            {
-                "type": "accrual",
-                "entries": [
-                    {
-                        "when": "6/10",
-                        "type": "receivable",
-                        "Dr": 100
-                    },
-                    {
-                        "when": "6/10",
-                        "type": "revenue",
-                        "Cr": 100
-                    },
-                    {
-                        "when": "7/15",
-                        "type": "cash",
-                        "Dr": 100
-                    },
-                    {
-                        "when": "7/15",
-                        "type": "receivable",
-                        "Cr": 100
-                    }
-                ]
-            }
-        ]
-    }
-
-    ]
     },
     submit: function() {
       this.evaluateAnswer()
@@ -153,9 +66,7 @@ export default {
       }
     },
     addRow: function() {
-      console.log(this.questionLoc)
       this.rows.push({date: "", type: "", debit: "", credit: ""})
-      console.log(this.rows)
     },
     removeRow: function() {
       this.rows.splice(-1)
@@ -244,7 +155,6 @@ export default {
       }
     },
     finish: function() {
-      console.log(this.questionLoc)
       this.$router.push({ name: "endScreen" , params: {score: this.score, questions: this.questionLoc, correctAnswers: this.correctAnswers}})
     },
     deleteRow: function(index) {
@@ -252,7 +162,7 @@ export default {
     }
   },
   created() {
-    this.getQuestions2()
+    this.getQuestions()
   },
 }
 </script>
